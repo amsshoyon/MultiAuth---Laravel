@@ -76,7 +76,9 @@ Route::group([
     Route::group([
         'prefix'     => 'todo',
     ], function(){ 
-        Route::get('/list', 'ToDoController@index')->name('admin.todos');
+        Route::get('/list', 'ToDoController@index')->name('todo.list');
+        Route::post('/add', 'ToDoController@store')->name('todo.add');
+        Route::delete('/delete/{id}', 'ToDoController@destroy')->name('task.delete');
     });
         
 

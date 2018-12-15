@@ -3,6 +3,8 @@
 namespace Bitfumes\Multiauth\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request; 
+use App\ToDo;
+use Crypt;
 
 class ToDoController extends Controller
 {
@@ -13,7 +15,8 @@ class ToDoController extends Controller
      */
     public function index()
     {
-        return view('vendor.multiauth.todo.index'); 
+        $tasks = ToDo::get();
+        return view('vendor.multiauth.todo.index')->with(compact('tasks')); 
     }
 
     /**
@@ -34,7 +37,10 @@ class ToDoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $store = new ToDo;
+        $store->task = $request->input('task');
+        $store->save();
+        return redirect('/todo/list')->with('message', 'Task added successfully');
     }
 
     /**
@@ -68,7 +74,10 @@ class ToDoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = ToDo::find ($request->id);
+        $post->task = $request->task;
+        $post->save();
+        return response()->json($post);
     }
 
     /**
@@ -79,6 +88,9 @@ class ToDoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $id = Crypt::decrypt($id);
+        $delete = ToDo::findOrFail($id);
+        $delete->delete();
+        return back()->with('message', 'Task Deleted');
     }
 }

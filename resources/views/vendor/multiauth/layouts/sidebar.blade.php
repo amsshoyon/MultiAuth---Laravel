@@ -68,7 +68,7 @@
             @endadmin
             {{-- <li><a href="../../documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li> --}}
             <li class="header">LABELS</li>
-            <li class="treeview {{ request()->is('admin/mailbox*') ? 'active' : '' }}">
+            <li class="treeview {{ request()->is('mailbox*') ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-envelope text-blue"></i>
                     <span>Mailbox</span>
@@ -77,20 +77,35 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ request()->is('admin/mailbox*/inbox') ? 'active' : '' }}">
+                    <li class="{{ request()->is('mailbox*/inbox') ? 'active' : '' }}">
                         <a href="{{ route('admin.inbox') }}"><i class="fa fa-circle-o"></i> Inbox</a>
                     </li>
-                    <li class="{{ request()->is('admin/mailbox*/sent') ? 'active' : '' }}">
+                    <li class="{{ request()->is('mailbox*/sent') ? 'active' : '' }}">
                         <a href="{{ route('admin.sent') }}"><i class="fa fa-circle-o"></i> Sent</a>
                     </li>
-                    <li class="{{ request()->is('admin/mailbox*/draft') ? 'active' : '' }}">
+                    <li class="{{ request()->is('mailbox*/draft') ? 'active' : '' }}">
                         <a href="{{ route('admin.draft') }}"><i class="fa fa-circle-o"></i> Draft</a>
                     </li>
-                    <li class="{{ request()->is('admin/mailbox*/trash') ? 'active' : '' }}">
+                    <li class="{{ request()->is('mailbox*/trash') ? 'active' : '' }}">
                         <a href="{{ route('admin.trash') }}"><i class="fa fa-circle-o"></i> Trash</a>
                     </li>
-                    <li class="{{ request()->is('admin/mailbox*/compose') ? 'active' : '' }}">
+                    <li class="{{ request()->is('mailbox*/compose') ? 'active' : '' }}">
                         <a href="{{ route('admin.compose') }}"><i class="fa fa-circle-o"></i> Compose</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="treeview {{ request()->is('todo*') ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-envelope text-blue"></i>
+                    <span>Tasks</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ request()->is('todo*/list') ? 'active' : '' }}">
+                        <a href="{{ route('todo.list') }}"><i class="fa fa-circle-o"></i> Task List</a>
                     </li>
                 </ul>
             </li>
