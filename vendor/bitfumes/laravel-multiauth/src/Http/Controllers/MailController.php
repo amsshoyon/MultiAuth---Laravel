@@ -69,7 +69,7 @@ class MailController extends Controller
             return view('vendor.multiauth.email.mailbox')->with(compact('messages', 'mailbox'));
         }
         else{
-            return redirect('/admin/mailbox/inbox');
+            return redirect('/mailbox/inbox');
         }
             
     }
@@ -151,7 +151,7 @@ class MailController extends Controller
 
             $store->save();
 
-            return redirect('/admin/mailbox/sent')->with('message', 'Message has been sent successfully');
+            return redirect('/mailbox/sent')->with('message', 'Message has been sent successfully');
         }
         elseif($request->has('draft')){
             $request->validate([
@@ -167,10 +167,10 @@ class MailController extends Controller
 
             $store->save();
 
-            return redirect('/admin/mailbox/draft')->with('message', 'Message has been saved to draft.');
+            return redirect('/mailbox/draft')->with('message', 'Message has been saved to draft.');
         }
         else{
-            return redirect('/admin/mailbox/inbox');
+            return redirect('/mailbox/inbox');
         }
 
     }
@@ -232,7 +232,7 @@ class MailController extends Controller
         $trash = Email::findOrFail($id);
         $trash->trash = 1;
         $trash->save(); 
-        return redirect('/admin/mailbox/inbox')->with('message',' Message has been moved to trash.');
+        return redirect('/mailbox/inbox')->with('message',' Message has been moved to trash.');
     }
     
     //email action: delete/draft/trash/mark as read

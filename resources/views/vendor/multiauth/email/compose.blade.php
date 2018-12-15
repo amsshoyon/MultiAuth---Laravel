@@ -6,7 +6,7 @@
     <small>13 new messages</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/admin/home"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Compose Email</li>
     </ol>
 </section>

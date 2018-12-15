@@ -44,7 +44,7 @@
             </li>
 
             
-            <li class="treeview {{-- {{ request()->is('admin*') ? 'active' : '' }} --}}">
+            <li class="treeview {{ request()->is('admin*') ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
                     <span> Admin</span>
@@ -53,22 +53,18 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class=" {{-- {{ request()->is('/admin/show') ? 'active' : '' }} --}}"><a href="{{ route('admin.show') }}"><i class="fa fa-circle-o"></i> All Admins</a></li>
-                    <li><a href="{{ route('admin.roles') }}"><i class="fa fa-circle-o"></i> Rules</a></li>
+                    <li class=" {{ request()->is('/admin/show') ? 'active' : '' }}">
+                        <a href="{{ route('admin.show') }}"><i class="fa fa-circle-o"></i> All Admins</a>
+                    </li>
+                    <li class=" {{ request()->is('/admin/role*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.roles') }}"><i class="fa fa-circle-o"></i> Rules</a>
+                    </li>
+                    <li class=" {{ request()->is('/admin/app*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.app.home') }}"><i class="fa fa-circle-o"></i> App Setting</a>
+                    </li>
                 </ul>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-pie-chart"></i>
-                    <span>Application</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ route('admin.app.home') }}"><i class="fa fa-circle-o"></i> App Setting</a></li>
-                </ul>
-            </li>
+
             @endadmin
             {{-- <li><a href="../../documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li> --}}
             <li class="header">LABELS</li>
