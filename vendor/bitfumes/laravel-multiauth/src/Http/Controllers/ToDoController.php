@@ -40,7 +40,7 @@ class ToDoController extends Controller
         $store = new ToDo;
         $store->task = $request->input('task');
         $store->save();
-        return redirect('/todo/list')->with('message', 'Task added successfully');
+        return back()->with('message', 'Task added successfully');
     }
 
     /**
@@ -72,12 +72,26 @@ class ToDoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $post = ToDo::find ($request->id);
-        $post->task = $request->task;
-        $post->save();
-        return response()->json($post);
+        $update = ToDo::findOrFail($request->input('id'));
+        $update->task = $request->input('task');
+        $update->update();
+        return back()->with('message','Task has been Updated');
+    }
+
+    public function status(Request $request, $id)
+    {
+        $status = ToDo::findOrFail($id);
+        if($status->status == 0){
+            $status->status = 1;
+        }
+        else{
+            $status->status = 0;
+        }
+        
+        $status->update();
+        return back();
     }
 
     /**

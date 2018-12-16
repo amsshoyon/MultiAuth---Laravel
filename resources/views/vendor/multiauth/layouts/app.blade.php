@@ -82,6 +82,7 @@
         <script src="{{ asset('adminlte/dist/js/demo.js') }}"></script>
 
         <script src="{{ asset('js/admin.js') }}"></script>
+        <script src="{{ asset('adminlte/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 
         <!-- jQuery UI 1.11.4 -->
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>

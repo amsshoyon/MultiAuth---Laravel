@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use View;
 use App\App;
 use App\Email;
+use App\ToDo;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
            $view->with('msgtop', Email::orderBy('id', 'DESC')->get()->where('sender', '1')
                                                                     ->where('read', '0')
                                                                     ->where('trash', '0'));
+        });
+
+        View::composer('*', function($view){
+           $view->with('tasktop', ToDo::get());
+        });
+        View::composer('*', function($view){
+           $view->with('taskcount', ToDo::get()->where('status', 0));
         });
     }
 

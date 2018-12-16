@@ -41,34 +41,31 @@
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
                                 @php
-                                    $i = 1;
+                                $i = 1;
                                 @endphp
                                 @foreach($msgtop as $showmsg)
-
                                 <li>
                                     <a href="{{route('admin.message',[$showmsg->id])}}">
-                                        <i class="fa fa-envelope"></i>&nbsp; 
+                                        <i class="fa fa-envelope"></i>&nbsp;
                                         <span>
                                             {{ str_limit($showmsg->name, $limit = 30, $end = '...') }}
                                             <small>
-                                                <i class="pull-right"><i class="fa fa-clock-o"></i>&nbsp;{{ $showmsg->created_at->diffForHumans(null, true) }}</i>
+                                            <i class="pull-right"><i class="fa fa-clock-o"></i>&nbsp;{{ $showmsg->created_at->diffForHumans(null, true) }}</i>
                                             </small>
                                             <br>
                                             <small style="color: #000;">
-                                                {{ str_limit($showmsg->subject, $limit = 50, $end = '...') }}
+                                            {{ str_limit($showmsg->subject, $limit = 50, $end = '...') }}
                                             </small>
                                         </span>
                                     </a>
                                 </li>
-
                                 @php
-                                    if($i == 10){
-                                        break;
-                                    }
-                                    $i++;
+                                if($i == 10){
+                                break;
+                                }
+                                $i++;
                                 @endphp
                                 @endforeach
-
                             </ul>
                         </li>
                         <li class="footer"><a href="/admin/mailbox">See All Messages</a></li>
@@ -120,134 +117,106 @@
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-flag-o"></i>
-                        <span class="label label-danger">9</span>
+                        <span class="label label-danger">@if(count($taskcount) != 0){{ count($taskcount) }}@endif</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 9 tasks</li>
+                        <li class="header">You have @if(count($taskcount) != 0){{ count($taskcount) }}@else no @endif incomplete task</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
+                                @php
+                                $i = 1;
+                                @endphp
+                                @foreach($tasktop as $task)
+                                <!-- end task item -->
                                 <li><!-- Task item -->
                                 <a href="#">
                                     <h3>
-                                    Design some buttons
-                                    <small class="pull-right">20%</small>
+                                        @if($task->status != 0)
+                                        <i class="fa fa-check"></i>&nbsp;
+                                        {{ str_limit($task->task, $limit = 30, $end = '...') }}
+                                        @else
+                                        <i class="fa fa-square"></i>&nbsp;
+                                        {{ str_limit($task->task, $limit = 30, $end = '...') }}
+                                        @endif
+
                                     </h3>
-                                    <div class="progress xs">
-                                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
                                 </a>
                             </li>
                             <!-- end task item -->
-                            <li><!-- Task item -->
-                            <a href="#">
-                                <h3>
-                                Create a nice theme
-                                <small class="pull-right">40%</small>
-                                </h3>
-                                <div class="progress xs">
-                                    <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="sr-only">40% Complete</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <!-- end task item -->
-                        <li><!-- Task item -->
-                        <a href="#">
-                            <h3>
-                            Some task I need to do
-                            <small class="pull-right">60%</small>
-                            </h3>
-                            <div class="progress xs">
-                                <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                    <span class="sr-only">60% Complete</span>
-                                </div>
-                            </div>
-                        </a>
+                            @php
+                            if($i == 10){
+                            break;
+                            }
+                            $i++;
+                            @endphp
+                            @endforeach
+                        
+                        </ul>
                     </li>
-                    <!-- end task item -->
-                    <li><!-- Task item -->
-                    <a href="#">
-                        <h3>
-                        Make beautiful transitions
-                        <small class="pull-right">80%</small>
-                        </h3>
-                        <div class="progress xs">
-                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                <span class="sr-only">80% Complete</span>
+                    <li class="footer">
+                        <a href="#">View all tasks</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @if(isset(auth('admin')->user()->image))
+                    <img src="/images/admin/{{ auth('admin')->user()->image }}" class="user-image" alt="User Image" style="max-width: 30px!important;">
+                    @else
+                    <img src="/images/profile.jpg" class="user-image" alt="User Image" style="max-width: 30px!important;">
+                    @endif
+                    <span class="hidden-xs">{{ auth('admin')->user()->name }}</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        @if(isset(auth('admin')->user()->image))
+                        <img src="/images/admin/{{ auth('admin')->user()->image }}" class="img-circle" alt="User Image">
+                        @else
+                        <img src="/images/profile.jpg" class="img-circle" alt="User Image">
+                        @endif
+                        <p class="text-center"">
+                            {{ auth('admin')->user()->name }} - Admin
+                            <small>Member since {{ auth('admin')->user()->created_at }}</small>
+                        </p>
+                    </li>
+                    <!-- Menu Body -->
+                    {{-- <li class="user-body">
+                        <div class="row">
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Followers</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Sales</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Friends</a>
                             </div>
                         </div>
-                    </a>
-                </li>
-                <!-- end task item -->
-            </ul>
-        </li>
-        <li class="footer">
-            <a href="#">View all tasks</a>
-        </li>
-    </ul>
-</li>
-<!-- User Account: style can be found in dropdown.less -->
-<li class="dropdown user user-menu">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        @if(isset(auth('admin')->user()->image))
-        <img src="/images/admin/{{ auth('admin')->user()->image }}" class="user-image" alt="User Image">
-        @else
-        <img src="/images/profile.jpg" class="user-image" alt="User Image">
-        @endif
-        <span class="hidden-xs">{{ auth('admin')->user()->name }}</span>
-    </a>
-    <ul class="dropdown-menu">
-        <!-- User image -->
-        <li class="user-header">
-            @if(isset(auth('admin')->user()->image))
-            <img src="/images/admin/{{ auth('admin')->user()->image }}" class="img-circle" alt="User Image">
-            @else
-            <img src="/images/profile.jpg" class="img-circle" alt="User Image">
-            @endif
-            <p>
-                {{ auth('admin')->user()->name }} - Admin
-                <small>Member since {{ auth('admin')->user()->created_at }}</small>
-            </p>
-        </li>
-        <!-- Menu Body -->
-        <li class="user-body">
-            <div class="row">
-                <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                </div>
-            </div>
-            <!-- /.row -->
-        </li>
-        <!-- Menu Footer-->
-        <li class="user-footer">
-            <div class="pull-left">
-                <a href="/admin/profile" class="btn btn-default btn-flat">Profile</a>
-            </div>
-            <div class="pull-right">
-                <a href="/admin/logout" class="btn btn-default btn-flat"  onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();">Sign out</a>
-                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-            </div>
-        </li>
-    </ul>
-</li>
-<!-- Control Sidebar Toggle Button -->
-<li>
-    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-</li>
-</ul>
-</div>
+                        <!-- /.row -->
+                    </li> --}}
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="/admin/profile" class="btn btn-default btn-flat">Profile</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/logout" class="btn btn-default btn-flat"  onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">Sign out</a>
+                            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <!-- Control Sidebar Toggle Button -->
+            <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li>
+        </ul>
+    </div>
 </nav>
 </header>

@@ -31,15 +31,30 @@
 					@foreach($tasks as $task)
 					<tr>
 						<td width="15px;">
-							<input type="checkbox" name="todo[]">
+							<form action="{{ route('todo.status', $task->id ) }}" method="post">
+						        @csrf 
+						        @method('patch')
+								<button type="submit" class="btn @if($task->status == 0) btn-default @else btn-success @endif btn-xs">
+									<i class="fa @if($task->status == 0) fa-square @else fa-check @endif"></i>
+								</button>
+							</form>
 						</td>
-						<td>{{ $task->task }}</td>
+						<td>
+							@if($task->status == 0)
+								{{ $task->task }}
+							@else
+								<del style="opacity: 0.7;">{{ $task->task }}</del>
+							@endif
+						</td>
 						<td class="pull-right">
-							<form action="{{ route('task.delete',[Crypt::encrypt($task->id)]) }}" method="POST">
+							<form action="{{ route('todo.delete',[Crypt::encrypt($task->id)]) }}" method="POST">
 								@csrf @method('delete')
-								<a href="#" class="edit btn btn-default btn-xs"
-									data-id="{{$task->id}}"
-									data-title="{{$task->task}}">
+								<a href="#" data-target="#my_modal"
+									data-toggle="modal"
+									class="edit btn btn-xs btn-default"
+									data-id="{{ $task->id }}"
+									data-task="{{ $task->task }}"
+									>
 									<i class="fa fa-edit"></i>
 								</a>
 								<button type="submit" class="btn btn-xs btn-danger" onclick="return deleteconfig()"><i class="fa fa-trash"></i></button>
@@ -54,57 +69,42 @@
 		
 	</div>
 </div>
-{{-- @include('vendor.multiauth.todo.add') --}}
-{{-- Modal Form Edit and Delete Post --}}
-<div id="edit"class="modal fade" role="dialog">
-	<div class="modal-dialog">
+
+
+{{-- Modal for Edit --}}
+<div class="modal fade" id="my_modal" tabindex="-1" role="dialog" aria-labelledby="my_modalLabel">
+	<div class="modal-dialog" role="dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Edit Task</h4>
-			</div>
-			<div class="modal-body">
-				<form class="form-horizontal" role="modal">
-					<input type="hidden" class="form-control" name="id" id="id">
-					<div class="form-group">
+			<form action="{{ route('todo.update') }}" method="post">
+		        @csrf
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+				</div>
+				<div class="modal-body">
+					
+					<input type="hidden" name="id" id="id" value="" />
+					<fieldset class="form-group">
 						<input type="text" name="task" class="form-control" id="task">
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn actionBtn" data-dismiss="modal">
-				<span id="footer_action_button" class="glyphicon"></span>
-				</button>
-				<button type="button" class="btn btn-warning" data-dismiss="modal">
-				<span class="glyphicon glyphicon"></span>close
-				</button>
-			</div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Update</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
-$(function(){
-  $('.edit').click(function(e){
-    e.preventDefault();
-    $('#edit').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-});
-
-function getRow(id){
-  $.ajax({
-    type: 'POST',
-    url: 'employee_row.php',
-    data: {id:id},
-    dataType: 'json',
-    success: function(response){
-      $('.empid').val(response.empid);
-      $('.employee_id').html(response.employee_id);
-    }
-  });
-}
-
+	$(function () {
+		$(".edit").click(function () {
+			var id = $(this).data('id');
+			var task = $(this).data('task');
+			$(".modal-body #id").val(id);
+			$(".modal-body #task").val(task);
+		})
+	});
 </script>
 @endsection
